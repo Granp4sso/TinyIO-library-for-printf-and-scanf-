@@ -4,7 +4,7 @@
 # First, specify your toolchain to compile the library.
 # Libraries available are compiled with riscv32-unknown-elf-
 
-RV_PREFIX = 	/opt/rv32/bin/riscv32-unknown-elf-
+RV_PREFIX = 	riscv32-unknown-elf-
 CC = 			$(RV_PREFIX)gcc
 AR = 			$(RV_PREFIX)ar
 OBJDUMP = 		$(RV_PREFIX)objdump
@@ -13,20 +13,20 @@ OBJDUMP = 		$(RV_PREFIX)objdump
 C_EXTENSION 	?= N
 F_EXTENSION		?= N
 
-ARCH = rv32imad
+ARCH = rv32im
 
-ifeq ($(F_EXTENSION), Y) 
+ifeq ($(F_EXTENSION), Y)
 ARCH := $(addsuffix f,$(ARCH))
 endif
 
-ifeq ($(C_EXTENSION), Y) 
+ifeq ($(C_EXTENSION), Y)
 ARCH := $(addsuffix c,$(ARCH))
 endif
 
 ARCH := $(addsuffix _zicsr_zifencei,$(ARCH))
 
 # Compiler flags
-CFLAGS = 		-march=$(ARCH)
+CFLAGS = 		-march=$(ARCH) -mabi=ilp32
 CFLAGS +=		-Wall -Werror -Wno-unused-but-set-variable
 CFLAGS +=		-O2
 CFLAGS += 		-c
@@ -44,15 +44,15 @@ ifeq ($(LONG_SUPPORT), N)
 MACRO_LIST += -DPRINTF_DISABLE_SUPPORT_LONG_LONG
 endif
 
-ifeq ($(FLOAT_SUPPORT), N) 
+ifeq ($(FLOAT_SUPPORT), N)
 MACRO_LIST += -DPRINTF_DISABLE_SUPPORT_FLOAT
 endif
 
-ifeq ($(EXP_SUPPORT), N) 
+ifeq ($(EXP_SUPPORT), N)
 MACRO_LIST += -DPRINTF_DISABLE_SUPPORT_EXPONENTIAL
 endif
 
-ifeq ($(PTR_SUPPORT), N) 
+ifeq ($(PTR_SUPPORT), N)
 MACRO_LIST += -DPRINTF_DISABLE_SUPPORT_PTRDIFF_T
 endif
 
@@ -73,7 +73,7 @@ $(LIB): $(OBJS)
 	@mkdir -p lib
 	$(AR) rcs $@ $^
 	rm src/*.o
-	
+
 dump:
 	$(OBJDUMP) -f lib/tinyio.a
 
