@@ -50,11 +50,17 @@ where linking libgcc.a is required. However, It is possible to compile the libra
 | PTR_SUPPORT=Y     | `%t`              | Requires the long support enabled                                                                     |
 
 
+By *default*, tinyIO is compiled with `DEBUG` symbols and `M_EXTENSION` enabled, meaning it must run on CPU with `muldiv` enabled.
 It is also possible to optionally include the compressed extension and/or the floating point extension in the compilation flow.
 To do so, pass to make `C_EXTENSION=Y` and/or `F_EXTENSION=Y`. As an instance, to compile tinyio with compressed extension enabled and support
 to the floating point format:
 ```
 make C_EXTENSION=Y F_EXTENSION=Y FLOAT_SUPPORT=Y
+
+```
+To compile without debug symbols and `muldiv` extension:
+```
+make DEBUG=N M_EXTENSION=N
 
 ```
 
@@ -65,10 +71,3 @@ Contributions to enhance and optimize the project are welcome. Please follow the
 3. Submit a pull request detailing the changes made and the rationale behind them.
 
 This project demonstrates a robust implementation of standard I/O operations tailored for embedded systems, emphasizing the need to adapt these operations to specific serial communication interfaces for seamless integration and functionality.
-
-
-
-
-
-
- 

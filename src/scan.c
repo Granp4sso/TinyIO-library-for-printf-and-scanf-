@@ -142,7 +142,7 @@ int	c_isdigit(int c)
                 {
                     // Implementation for %s
                     char* t = save ? va_arg(ap, char*) : NULL;
-                    while (CURCHAR != '\n' && CURCHAR != EOF && (!lenEn || len > 0)) {
+                    while (CURCHAR != '\n' && CURCHAR != '\r' && CURCHAR != EOF && (!lenEn || len > 0)) {
                         if (save)
                             *t++ = CURCHAR;
                         NEXTCHAR;

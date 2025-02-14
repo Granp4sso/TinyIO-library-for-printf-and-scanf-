@@ -10,10 +10,17 @@ AR = 			$(RV_PREFIX)ar
 OBJDUMP = 		$(RV_PREFIX)objdump
 
 #Architecture
+M_EXTENSION 	?= Y
 C_EXTENSION 	?= N
 F_EXTENSION		?= N
 
-ARCH = rv32im
+ARCH = rv32i
+
+DEBUG 			?= Y
+
+ifeq ($(M_EXTENSION), Y)
+ARCH := $(addsuffix m,$(ARCH))
+endif
 
 ifeq ($(F_EXTENSION), Y)
 ARCH := $(addsuffix f,$(ARCH))
@@ -30,6 +37,10 @@ CFLAGS = 		-march=$(ARCH) -mabi=ilp32
 CFLAGS +=		-Wall -Werror -Wno-unused-but-set-variable
 CFLAGS +=		-O2
 CFLAGS += 		-c
+
+ifeq ($(DEBUG), Y)
+CFLAGS +=		-g
+endif
 
 # Include
 INCLUDES = 		-Iinc
