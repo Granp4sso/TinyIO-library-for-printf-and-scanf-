@@ -26,7 +26,7 @@ The project directory is structured as follows:
     └── uart.c      # uart_send_char and uart_get_char functions
 ``` 
 # Dependencies
-The project requires a development environment capable of compiling C/C++ code and targeting the specific architecture (edefault is riscv 32bit).
+The project requires a development environment capable of compiling C/C++ code and targeting the specific architecture (either 32 or 64 bits).
 Ensure that the necessary toolchain and libraries for your target platform are properly installed and configured.
 The files `src/uart.c` and `inc/uart.h` are hardware-dependant and must be provided for the specific UART device. Current version implements
 a Xilinx AXI4-lite UART device driver, with a blocking scanf. 
@@ -62,6 +62,10 @@ To compile without debug symbols and `muldiv` extension:
 ```
 make DEBUG=N M_EXTENSION=N
 
+```
+As a sidenote, TinyIO supports both 32 and 64 bits architecture. Default is 32, but to build at 64 bits
+```
+make XLEN=64
 ```
 
 # Contribution

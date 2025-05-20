@@ -4,7 +4,8 @@
 # First, specify your toolchain to compile the library.
 # Libraries available are compiled with riscv32-unknown-elf-
 
-RV_PREFIX = 	riscv32-unknown-elf-
+XLEN ?=			32
+RV_PREFIX = 	riscv${XLEN}-unknown-elf-
 CC = 			$(RV_PREFIX)gcc
 AR = 			$(RV_PREFIX)ar
 OBJDUMP = 		$(RV_PREFIX)objdump
@@ -14,7 +15,7 @@ M_EXTENSION 	?= Y
 C_EXTENSION 	?= N
 F_EXTENSION		?= N
 
-ARCH = rv32i
+ARCH = rv${XLEN}i
 
 DEBUG 			?= Y
 
@@ -32,8 +33,17 @@ endif
 
 ARCH := $(addsuffix _zicsr_zifencei,$(ARCH))
 
+# Select ABI depending on XLEN
+ifeq ($(XLEN), 64)
+ABI := lp64
+else ifeq ($(XLEN), 32)
+ABI := ilp32
+else
+$(error Unsupported XLEN value: $(XLEN))
+endif
+
 # Compiler flags
-CFLAGS = 		-march=$(ARCH) -mabi=ilp32
+CFLAGS = 		-march=$(ARCH) -mabi=$(ABI)
 CFLAGS +=		-Wall -Werror -Wno-unused-but-set-variable
 CFLAGS +=		-O2
 CFLAGS += 		-c
